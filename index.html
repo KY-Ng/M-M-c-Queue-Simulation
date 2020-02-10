@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>M/M/S Queue Model</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>M/M/S Queue Model</h1>
+    </header>
+
+    <div id="input1">
+      <div>
+        <label for="numCounter">Counter(s)</label>
+        <input id="numCounter" type="number" name="numCounter" value="1" defaultValue="1" min="1">
+      </div>
+      <div>
+        <label for="lambda">&#955</label>
+          <input id="lambda" type="text" name="lambda" value="0.3" defaultValue="0.3" min="0">
+        </div>
+        <div>
+          <label for="mu">&#956</label>
+          <input id="mu" type="text" name="mu" value="0.5" defaultValue="0.5" min="0">
+        </div>
+      </div>
+
+      <div id="input2">
+        <label for="steps">Steps</label>
+        <input id="steps" type="number" name="steps" value="50" defaultValue="50" min="0">
+      </div>
+
+      <button id="start_btn" type="button">Start Simulation</button>
+
+      <main>
+
+      </main>
+
+      <script src="js/app.js"></script>
+      <script src="js/listener.js"></script>
+    </body>
+  </html>
