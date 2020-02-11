@@ -1,4 +1,5 @@
 const ctx = document.getElementById('chart').getContext('2d');
+let chart;
 
 // Calculation related to Queue Model
 function factorial(n, next=1) {
@@ -110,10 +111,6 @@ function updateChart(chart, new_x, new_ys) {
   chart.update();
 }
 
-function resetChart(context) {
-  createChart(context, [0], [0], [0]);
-}
-
 function simulate(model, numSteps, delay) {
   console.log("Start Simulation...");
   // Start Simulation
@@ -122,7 +119,7 @@ function simulate(model, numSteps, delay) {
   let numCustomer = [0];
   let queueLength = [0];
   // Show initial graph
-  let chart = createChart(ctx, x, numCustomer, queueLength);
+  chart = createChart(ctx, x, numCustomer, queueLength);
 
   // Varibles
   let counterInUse = 0;
@@ -132,13 +129,6 @@ function simulate(model, numSteps, delay) {
       // get previous number of customer and number of counters in use
       let nextCustomerNum = numCustomer[idx - 1];
       let currentCounterInUse = counterInUse;
-      // console.log({
-      //   time: idx,
-      //   currentNum: nextCustomerNum,
-      //   usedCounters: currentCounterInUse,
-      //   increaseProb: model.getNProb(nextCustomerNum + 1),
-      //   decreaseProb: model.getNProb(nextCustomerNum - 1)
-      // });
       // loop through each counter and see if they finished providing service
       for (let c = 0; c < currentCounterInUse; c++) {
         // provide service
@@ -157,14 +147,6 @@ function simulate(model, numSteps, delay) {
       } else {
         counterInUse = nextCustomerNum;
       }
-      // if (counterInUse === 0) {
-      //   for (let c = 0; c < model.numCounter; c++) {
-      //     // customers are waiting, so assign
-      //     if (nextCustomerNum > counterInUse) {
-      //       counterInUse++;
-      //     }
-      //   }
-      // }
       // update x
       x.push(idx)
       // update numCustomer & queueLength
@@ -174,4 +156,6 @@ function simulate(model, numSteps, delay) {
       updateChart(chart, x, [numCustomer, queueLength]);
     }, delay*idx);
   }
+  // reset chart to allow another simulation
+  chart.reset();
 }

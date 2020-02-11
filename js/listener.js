@@ -5,7 +5,7 @@ const stepsInput = document.getElementById('steps');
 const speedInput = document.getElementById('speed');
 const conditionText = document.getElementById('conditionText');
 const startButton = document.getElementById('start_btn');
-const resetButton = document.getElementById('reset_btn');
+// const resetButton = document.getElementById('reset_btn');
 
 startButton.addEventListener('click', () => {
   let numCounter = parseInt(numCounterInput.value);
@@ -29,7 +29,6 @@ startButton.addEventListener('click', () => {
   }
 });
 
-resetButton.addEventListener('click', () => {
-  // console.log(ctx);
-  resetChart(ctx);
-});
+// resetButton.addEventListener('click', () => {
+//   resetChart(chart);
+// });
