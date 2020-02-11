@@ -58,7 +58,7 @@ function simulate(model, numSteps) {
     if (counterInUse === 0) {
       for (let c = 0; c < model.numCounter; c++) {
         // customers are waiting, so assign
-        if (nextCustomerNum > 0) {
+        if (nextCustomerNum > counterInUse) {
           counterInUse++;
         }
       }
