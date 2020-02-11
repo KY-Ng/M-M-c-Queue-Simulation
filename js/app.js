@@ -11,15 +11,12 @@ class Counter {
 }
 
 function createModel(params) {
-  console.log("Update Model...");
-  let newModel = new QueueModel(params);
-  console.log(newModel);
-
-  return newModel;
+  console.log("Creating Model...");
+  // Create Model
+  return new QueueModel(params);
 }
 
 function simulate(model, numSteps) {
-  console.log("Start Simulation...");
 
   // Initialize Counters
   let counters = []
@@ -27,7 +24,11 @@ function simulate(model, numSteps) {
     counters[n] = new Counter();
   }
 
+  console.log("Start Simulation...");
+  // Start Simulation
   for (let i = 0; i < numSteps; i++) {
     console.log(i);
+    // add new customer
+    // provide service
   }
 }
