@@ -1,10 +1,42 @@
 const ctx = document.getElementById('chart').getContext('2d');
 
+// Calculation related to Queue Model
+function factorial(n, next=1) {
+  if (n === 0) {
+    return next;
+  } else {
+    return factorial(n-1, n * next);
+  }
+}
+
+function getInitialProb(k, lambda, mu) {
+  return factorial(k-1) * (1 - lambda/(k*mu)) / Math.pow(k, k-1);
+}
+
 class QueueModel {
   constructor(model_params) {
     this.numCounter = model_params.numCounter;
     this.lambda = model_params.lambda;
     this.mu = model_params.mu;
+    this.rho = model_params.lambda / model_params.mu;
+    this.initialProb = getInitialProb(model_params.numCounter, model_params.lambda, model_params.mu);
+  }
+
+  getKProb(k, next=1) {
+    if (k <= 0) {
+      return next * this.initialProb;
+    }
+    return this.getKProb(k-1, (this.rho/k)*next);
+  }
+
+  getNProb(n) {
+    if (n >= (this.numCounter - 1)) {
+      // q_{n} = (\frac{\lambda}{k\mu})^{n}(1-\frac{\lambda}{k\mu})
+      return Math.pow((this.rho / this.numCounter), n) * (1 - (this.rho / this.numCounter));
+    } else {
+      // use recursive
+      return this.getKProb(n);
+    }
   }
 }
 
@@ -100,31 +132,39 @@ function simulate(model, numSteps, delay) {
       // get previous number of customer and number of counters in use
       let nextCustomerNum = numCustomer[idx - 1];
       let currentCounterInUse = counterInUse;
+      // console.log({
+      //   time: idx,
+      //   currentNum: nextCustomerNum,
+      //   usedCounters: currentCounterInUse,
+      //   increaseProb: model.getNProb(nextCustomerNum + 1),
+      //   decreaseProb: model.getNProb(nextCustomerNum - 1)
+      // });
       // loop through each counter and see if they finished providing service
       for (let c = 0; c < currentCounterInUse; c++) {
         // provide service
-        if (Math.random() < model.mu) {
+        if (Math.random() < model.getNProb(nextCustomerNum - 1)) {
           nextCustomerNum--;
           counterInUse--;
         }
       }
       // add new customer
-      if (Math.random() < model.lambda) {
+      if (Math.random() < model.getNProb(nextCustomerNum + 1)) {
         nextCustomerNum++;
-        // counter is empty
-        if (counterInUse < model.numCounter) {
-          counterInUse++;
-        }
       }
       // assign customer to counters
-      if (counterInUse === 0) {
-        for (let c = 0; c < model.numCounter; c++) {
-          // customers are waiting, so assign
-          if (nextCustomerNum > counterInUse) {
-            counterInUse++;
-          }
-        }
+      if (nextCustomerNum > model.numCounter) {
+        counterInUse = model.numCounter;
+      } else {
+        counterInUse = nextCustomerNum;
       }
+      // if (counterInUse === 0) {
+      //   for (let c = 0; c < model.numCounter; c++) {
+      //     // customers are waiting, so assign
+      //     if (nextCustomerNum > counterInUse) {
+      //       counterInUse++;
+      //     }
+      //   }
+      // }
       // update x
       x.push(idx)
       // update numCustomer & queueLength
