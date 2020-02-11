@@ -24,20 +24,48 @@ function createChart(context, x, y1, y2) {
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         fill: false,
-        data: y1
+        data: y1,
+        pointRadius: 2
       },
       {
         label: 'Length of Queue',
         backgroundColor: 'rgb(99, 200, 132)',
         borderColor: 'rgb(99, 200, 132)',
         fill: false,
-        data: y2
+        data: y2,
+        pointRadius: 2
       }]
     },
     options: {
+      responsive: true,
+      title: {
+        display: true,
+        position: 'top',
+        text: 'Changes in Number of Customers and Length of Queue over time',
+        fontSize: 16
+      },
+      legend: {
+				position: 'bottom',
+			},
+      scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Unit Time'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Number of People'
+					}
+				}]
+			},
       animation: {
             duration: 0 // general animation time
-        }
+      }
     }
   })
 }

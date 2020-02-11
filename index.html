@@ -4,47 +4,50 @@
     <meta charset="utf-8">
     <title>M/M/S Queue Model</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
   </head>
   <body>
     <header>
-      <h1>M/M/S Queue Model</h1>
+      <h1>M/M/S QUEUE MODEL</h1>
     </header>
+
+    <hr/>
 
     <div id="input1">
       <div>
-        <label for="numCounter">Counter(s)</label>
+        <label for="numCounter">Counter(s):</label>
         <input id="numCounter" type="number" name="numCounter" value="1" defaultValue="1" min="1">
       </div>
       <div>
-        <label for="lambda">&#955</label>
+        <label for="lambda">&#955:</label>
           <input id="lambda" type="text" name="lambda" value="0.3" defaultValue="0.3" min="0">
         </div>
         <div>
-          <label for="mu">&#956</label>
+          <label for="mu">&#956:</label>
           <input id="mu" type="text" name="mu" value="0.5" defaultValue="0.5" min="0">
         </div>
       </div>
 
       <div id="input2">
-        <label for="steps">Steps</label>
+        <label for="steps">Steps:</label>
         <input id="steps" type="number" name="steps" value="50" defaultValue="50" min="0">
 
-        <label for="speed">Speed</label>
+        <label for="speed">Speed:</label>
         <select id="speed" name="speed">
           <option value="1000">Slow</option>
           <option value="500">Medium</option>
           <option value="100">Fast</option>
-          <option value="0">Very Fast</option>
+          <option value="0" selected>Very Fast</option>
         </select>
       </div>
 
       <button id="start_btn" type="button">Start Simulation</button>
       <button id="reset_btn" type="button">Reset</button>
 
-      <main>
+      <div class="chart_container">
         <canvas id="chart" width="1200" height="600"></canvas>
-      </main>
+      </div>
 
       <script src="js/app.js"></script>
       <script src="js/listener.js"></script>

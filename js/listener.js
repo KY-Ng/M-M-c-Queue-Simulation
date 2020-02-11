@@ -7,7 +7,6 @@ const startButton = document.getElementById('start_btn');
 const resetButton = document.getElementById('reset_btn');
 
 startButton.addEventListener('click', () => {
-  console.log('clicked');
   let model = createModel({
     numCounter: parseInt(numCounterInput.value),
     lambda: parseFloat(lambdaInput.value),
