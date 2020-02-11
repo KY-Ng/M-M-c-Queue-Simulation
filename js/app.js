@@ -14,16 +14,8 @@ function createModel(params) {
   return new QueueModel(params);
 }
 
-function simulate(model, numSteps, delay) {
-  console.log("Start Simulation...");
-  console.log(delay);
-  // Start Simulation
-  // Variables for Graph plotting
-  let x = [0];
-  let numCustomer = [0];
-  let queueLength = [0];
-  // Show initial graph
-  let chart = new Chart(ctx, {
+function createChart(context, x, y1, y2) {
+  return new Chart(context, {
     type: 'line',
     data: {
       labels: x,
@@ -32,14 +24,14 @@ function simulate(model, numSteps, delay) {
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         fill: false,
-        data: numCustomer
+        data: y1
       },
       {
         label: 'Length of Queue',
         backgroundColor: 'rgb(99, 200, 132)',
         borderColor: 'rgb(99, 200, 132)',
         fill: false,
-        data: queueLength
+        data: y2
       }]
     },
     options: {
@@ -48,6 +40,29 @@ function simulate(model, numSteps, delay) {
         }
     }
   })
+}
+
+function updateChart(chart, new_x, new_ys) {
+  chart.data.labels = new_x;
+  for (let n = 0; n < new_ys.length; n++) {
+    chart.data.datasets[n].data = new_ys[n];
+  }
+  chart.update();
+}
+
+function resetChart(context) {
+  createChart(context, [0], [0], [0]);
+}
+
+function simulate(model, numSteps, delay) {
+  console.log("Start Simulation...");
+  // Start Simulation
+  // Variables for Graph plotting
+  let x = [0];
+  let numCustomer = [0];
+  let queueLength = [0];
+  // Show initial graph
+  let chart = createChart(ctx, x, numCustomer, queueLength);
 
   // Varibles
   let counterInUse = 0;
@@ -88,10 +103,7 @@ function simulate(model, numSteps, delay) {
       numCustomer.push(nextCustomerNum);
       queueLength.push(nextCustomerNum - counterInUse);
       // update graph
-      chart.data.labels = x;
-      chart.data.datasets[0].data = numCustomer;
-      chart.data.datasets[1].data = queueLength;
-      chart.update();
+      updateChart(chart, x, [numCustomer, queueLength]);
     }, delay*idx);
   }
 }

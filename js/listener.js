@@ -4,6 +4,7 @@ const muInput = document.getElementById('mu');
 const stepsInput = document.getElementById('steps');
 const speedInput = document.getElementById('speed');
 const startButton = document.getElementById('start_btn');
+const resetButton = document.getElementById('reset_btn');
 
 startButton.addEventListener('click', () => {
   console.log('clicked');
@@ -12,5 +13,12 @@ startButton.addEventListener('click', () => {
     lambda: parseFloat(lambdaInput.value),
     mu: parseFloat(muInput.value)
   })
-  simulate(model, parseInt(stepsInput.value), parseInt(speedInput.value));
-})
+
+  let speed = parseInt(speedInput.value);
+  let steps = parseInt(stepsInput.value);
+  simulate(model, steps, speed);
+});
+
+resetButton.addEventListener('click', () => {
+  resetChart(ctx);
+});
