@@ -114,6 +114,12 @@ function updateChart(chart, new_x, new_ys) {
   chart.update();
 }
 
+function removeChart(chart) {
+  if (chart) {
+    chart.destroy();
+  }
+}
+
 function simulate(model, initialY1, numSteps, delay, debug=false) {
   console.log("Start Simulation...");
   // Start Simulation
