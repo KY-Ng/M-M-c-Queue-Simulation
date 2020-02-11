@@ -14,7 +14,7 @@
 
     <hr/>
 
-    <div id="input1">
+    <div class="input">
       <div>
         <label for="numCounter">Counter(s):</label>
         <input id="numCounter" type="number" name="numCounter" value="1" defaultValue="1" min="1">
@@ -29,7 +29,12 @@
         </div>
       </div>
 
-      <div id="input2">
+      <div class="input">
+        <label for="initial_customer">Initial Number of Customer(s):</label>
+        <input id="initial_customer" type="number" name="initial_customer" value="0" defaultValue="0" min="0">
+      </div>
+
+      <div class="input">
         <label for="steps">Steps:</label>
         <input id="steps" type="number" name="steps" value="50" defaultValue="50" min="0">
 
@@ -44,7 +49,6 @@
 
       <p id="conditionText">Condition for Simulation: &#955 &lt k&#956</p>
       <button id="start_btn" type="button">Start Simulation</button>
-      <!-- <button id="reset_btn" type="button">Reset</button> -->
 
       <div class="chart_container">
         <canvas id="chart" width="1200" height="600"></canvas>

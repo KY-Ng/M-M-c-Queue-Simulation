@@ -2,17 +2,17 @@ const ctx = document.getElementById('chart').getContext('2d');
 let chart;
 
 // Calculation related to Queue Model
-function factorial(n, next=1) {
-  if (n === 0) {
-    return next;
-  } else {
-    return factorial(n-1, n * next);
-  }
-}
-
-function getInitialProb(k, lambda, mu) {
-  return factorial(k-1) * (1 - lambda/(k*mu)) / Math.pow(k, k-1);
-}
+// function factorial(n, next=1) {
+//   if (n === 0) {
+//     return next;
+//   } else {
+//     return factorial(n-1, n * next);
+//   }
+// }
+//
+// function getInitialProb(k, lambda, mu) {
+//   return factorial(k-1) * (1 - lambda/(k*mu)) / Math.pow(k, k-1);
+// }
 
 class QueueModel {
   constructor(model_params) {
@@ -20,25 +20,25 @@ class QueueModel {
     this.lambda = model_params.lambda;
     this.mu = model_params.mu;
     this.rho = model_params.lambda / model_params.mu;
-    this.initialProb = getInitialProb(model_params.numCounter, model_params.lambda, model_params.mu);
+    // this.initialProb = getInitialProb(model_params.numCounter, model_params.lambda, model_params.mu);
   }
-
-  getKProb(k, next=1) {
-    if (k <= 0) {
-      return next * this.initialProb;
-    }
-    return this.getKProb(k-1, (this.rho/k)*next);
-  }
-
-  getNProb(n) {
-    if (n >= (this.numCounter - 1)) {
-      // q_{n} = (\frac{\lambda}{k\mu})^{n}(1-\frac{\lambda}{k\mu})
-      return Math.pow((this.rho / this.numCounter), n) * (1 - (this.rho / this.numCounter));
-    } else {
-      // use recursive
-      return this.getKProb(n);
-    }
-  }
+  //
+  // getKProb(k, next=1) {
+  //   if (k <= 0) {
+  //     return next * this.initialProb;
+  //   }
+  //   return this.getKProb(k-1, (this.rho/k)*next);
+  // }
+  //
+  // getNProb(n) {
+  //   if (n >= (this.numCounter - 1)) {
+  //     // q_{n} = (\frac{\lambda}{k\mu})^{n}(1-\frac{\lambda}{k\mu})
+  //     return Math.pow((this.rho / this.numCounter), n) * (1 - (this.rho / this.numCounter));
+  //   } else {
+  //     // use recursive
+  //     return this.getKProb(n);
+  //   }
+  // }
 }
 
 function createModel(params) {
@@ -93,7 +93,10 @@ function createChart(context, x, y1, y2) {
 					scaleLabel: {
 						display: true,
 						labelString: 'Number of People'
-					}
+					},
+          ticks: {
+            beginAtZero: true
+          }
 				}]
 			},
       animation: {
@@ -111,34 +114,48 @@ function updateChart(chart, new_x, new_ys) {
   chart.update();
 }
 
-function simulate(model, numSteps, delay) {
+function simulate(model, initialY1, numSteps, delay, debug=false) {
   console.log("Start Simulation...");
   // Start Simulation
   // Variables for Graph plotting
+  let counterInUse = 0;
+  if (initialY1 > model.numCounter) {
+    counterInUse = model.numCounter;
+  } else {
+    counterInUse = initialY1;
+  }
   let x = [0];
-  let numCustomer = [0];
-  let queueLength = [0];
+  let numCustomer = [initialY1];
+  let queueLength = [initialY1 - counterInUse];
+
   // Show initial graph
   chart = createChart(ctx, x, numCustomer, queueLength);
-
-  // Varibles
-  let counterInUse = 0;
-
   for (let idx = 1; idx <= numSteps; idx++) {
     setTimeout(() => {
       // get previous number of customer and number of counters in use
       let nextCustomerNum = numCustomer[idx - 1];
       let currentCounterInUse = counterInUse;
+
+      if (debug) {
+        console.log({
+          time: idx,
+          customers: nextCustomerNum,
+          counters: currentCounterInUse,
+          initialProb: model.initialProb,
+          increaeseProb: model.getNProb(nextCustomerNum + 1),
+          decreaseProb: model.getNProb(nextCustomerNum - 1)
+        });
+      }
       // loop through each counter and see if they finished providing service
       for (let c = 0; c < currentCounterInUse; c++) {
         // provide service
-        if (Math.random() < model.getNProb(nextCustomerNum - 1)) {
+        if (Math.random() < model.mu) {
           nextCustomerNum--;
           counterInUse--;
         }
       }
       // add new customer
-      if (Math.random() < model.getNProb(nextCustomerNum + 1)) {
+      if (Math.random() < model.lambda) {
         nextCustomerNum++;
       }
       // assign customer to counters

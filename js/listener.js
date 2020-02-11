@@ -1,11 +1,11 @@
 const numCounterInput = document.getElementById('numCounter');
 const lambdaInput = document.getElementById('lambda');
 const muInput = document.getElementById('mu');
+const initialCustomerInput = document.getElementById('initial_customer');
 const stepsInput = document.getElementById('steps');
 const speedInput = document.getElementById('speed');
 const conditionText = document.getElementById('conditionText');
 const startButton = document.getElementById('start_btn');
-// const resetButton = document.getElementById('reset_btn');
 
 startButton.addEventListener('click', () => {
   let numCounter = parseInt(numCounterInput.value);
@@ -23,12 +23,9 @@ startButton.addEventListener('click', () => {
       mu: mu
     })
 
-    let speed = parseInt(speedInput.value);
+    let initialCustomer = parseInt(initialCustomerInput.value);
     let steps = parseInt(stepsInput.value);
-    simulate(model, steps, speed);
+    let speed = parseInt(speedInput.value);
+    simulate(model, initialCustomer, steps, speed);
   }
 });
-
-// resetButton.addEventListener('click', () => {
-//   resetChart(chart);
-// });
